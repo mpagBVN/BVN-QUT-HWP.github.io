@@ -17,6 +17,7 @@ html, body, section {
 
 
 h1 {
+  margin-top: 0em;
   font-size: 3.5em;
   color: black;
   font-family: 'Playfair Display', serif;
