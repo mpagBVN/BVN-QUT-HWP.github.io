@@ -11,6 +11,8 @@
 	<script type="text/javascript" src="node_modules/three/build/three.module.js"></script>
 	<script type="text/javascript" src="node_modules/three/examples/js/renderers/CSS3DRenderer.js"></script>
 	<script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<script type="text/javascript" src="node_modules/hammerjs/hammer.min.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js"></script>
 	<script type="text/javascript" src="js/tween.min.js"></script>
@@ -26,9 +28,15 @@
 	<script type="text/javascript" src="node_modules/three/examples/js/postprocessing/RenderPass.js"></script>
 	<script type="text/javascript" src="node_modules/three/examples/js/postprocessing/ShaderPass.js"></script>
 	<script type="text/javascript" src="ref/sunPosition.js"></script>
+	<script>
+  $( function() {
+    $( document ).tooltip();
+  } );
+  </script>
 
 	<!-- style imports -->
 	<link rel="stylesheet" type="text/css" href="style/index.css">
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed&display=swap" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Advent+Pro:500|Open+Sans" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Playfair+Display:700|Quicksand" rel="stylesheet">
@@ -47,14 +55,16 @@
 	  <!-- diagram content -->
 	  <div class="flexBox" id="left-half">
   		<div id="container"></div>
-		<div id="css3dScene"></div>
+		<!-- <div id="css3dScene"></div> -->
 	  </div>
 	  <!-- text content -->
 	  <div class="flexBox" id="right-half">
 	      <div id="textContent">
-	        <h1 id="heading">Insert Header Statement About Diagram</h1>
-	        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse auctor imperdiet ex. Phasellus justo massa, dignissim id purus sit amet, bibendum lobortis nisi. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Why don't you try cracking open the existing building? A double click, or double-tap might help...</p><br><br><br>
-	      	<img style="height:50px; margin-bottom: 20px;padding-right: 0px;" src="../../../img/qut-logo-og-1200.jpg">
+	        <h1 id="heading">Insert Header Statement About Diagram</h1><br>
+	        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse auctor imperdiet ex. Phasellus justo massa, dignissim id purus sit amet, bibendum lobortis nisi. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. <br><br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse auctor imperdiet ex. Phasellus justo massa, dignissim id purus sit amet, bibendum lobortis nisi. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
+        	<br><br><br><b>Interactivity Format:</b><br><br>
+	      	<a href="#" title="Double-Click or Double-Tap to Animate"><img style="height:50px; margin-bottom: 20px;padding-right: 0px;" src="/img/touchIcon.png"></a>
+	      	<a href="#" title="Click and Drag, or Touch and Drag to Rotate"><img style="height:50px; margin-bottom: 20px;padding-right: 0px;" src="/img/touchIcon5.png"></a>
 <!-- 	        <input type="range" min="0" max="100" value="0" class="slider" id="myRange">
 	        <input type="range" min="0" max="100" value="0" class="slider" id="myRange2"> -->
 	      </div>

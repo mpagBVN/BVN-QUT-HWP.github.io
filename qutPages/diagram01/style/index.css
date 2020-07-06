@@ -128,7 +128,7 @@ html {
 }
 
 #left-half {
-  background-color: #CFD8DC;
+  background-color: #fdf7e8;
   flex: 2;
   min-width: 50.000%;
 }
@@ -185,4 +185,8 @@ p {
     border-radius: 50%;
     background: #353535;
     cursor: pointer;
+}
+
+*:focus {
+    outline: 0;
 }

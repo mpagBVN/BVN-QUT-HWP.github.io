@@ -3,8 +3,9 @@ var camera, scene, renderer, rectangle, div, controls, manager, mixer, composer,
 var clock = new THREE.Clock();
 camTarget = new THREE.Vector3(0,40,0);
 var clips = [];
+var clipCount = 0;
 var TOD = 10;
-var globalPlane, globalPlane2, globalPlane3;
+var globalPlane;
 /////////Events/////////////////////
 window.addEventListener( 'resize', onWindowResize, false );
 Hammer(document.getElementById('container')).on("doubletap", mixerPlay);
@@ -19,14 +20,15 @@ init();
 function init(){
   
   scene = new THREE.Scene();
+  scene.background = new THREE.Color( 0xfdf7e8 );
   
   near = -100; 
   far = 10000;
   camera = new THREE.OrthographicCamera( frustumSize*aspect/-2, frustumSize*aspect/2, frustumSize/2, frustumSize/-2, near, far );
-  camera.position.x = 20;
+  camera.position.x = -20;
   camera.position.y = 200;
   camera.position.z = 20;
-  camera.zoom = 8;
+  camera.zoom = 4;
   camera.aspect = aspect;
   camera.target = camTarget;
   camera.updateProjectionMatrix();
@@ -39,11 +41,17 @@ function init(){
     path + 'posz' + format, path + 'negz' + format
   ] );
 
-  /////////ClippingPlanes///////////////
-  // globalPlane = new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 100);
-  // globalPlane2 = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), -8.5);
-  // globalPlane3 = new THREE.Plane( new THREE.Vector3( 0, 0, -1 ), 60);
-  // globalPlane4 = new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), -20);
+  /////////ClippingPlanes & Shadow Planes///////////
+  globalPlane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 0.1);
+  globalPlane2 = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 5);
+  var geometryPlane = new THREE.PlaneGeometry(1000,1000);
+  var groundMaterial = new THREE.ShadowMaterial();
+  groundMaterial.opacity = 0.2;
+  var ground = new THREE.Mesh(geometryPlane, groundMaterial);
+  ground.rotateX( - Math.PI / 2 );
+  ground.position.y = -14;
+  ground.receiveShadow = true;
+  scene.add( ground );
 
   //////////Loader////////////////////////
 
@@ -84,43 +92,47 @@ function init(){
   };
 
   // Load a glTF resource
-  loader.load('models/OLA_Test1.glb', function ( gltf ) {
+  loader.load('models/QUT_Diagram_01.glb', function ( gltf ) {
       model = gltf.scene;
       clips = gltf.animations;
       scene.add( model );
       gltf.animations; // Array<THREE.AnimationClip>
       gltf.scene; // THREE.Scene
       gltf.asset; // Object
+      console.log(gltf.scene);
 
       gltf.scene.traverse(function(object) {
 
         if (object instanceof THREE.Mesh){
           object.material.envMap = envMap;
-          object.material.envMapIntensity = 0.3;
+          object.material.envMapIntensity = 0.1;
         };
 
-        // if (object instanceof THREE.Mesh && object.name !='OLD_TOPO_CLOUDS') {
-        //   object.castShadow = "true";
-        //   object.receiveShadow = "true"
-        //   object.material.clippingPlanes = [ globalPlane, globalPlane2, globalPlane3 ];
-        //   object.material.clipShadows = true; 
-        // };
+        if (object instanceof THREE.Mesh && object.name !='Green') {
+          object.castShadow = "true";
+          object.receiveShadow = "true"
+          object.material.clippingPlanes = [globalPlane];
+          object.material.clipShadows = true; 
+          console.log("captured");
+        };
 
-        // if (object instanceof THREE.Mesh && object.material.name =='Facade') {
-        //   object.castShadow = "false";
-        //   object.receiveShadow = "false"
-        //   object.material.transparent = "true";
-        // };
+        if (object instanceof THREE.Mesh && object.name =='Green') {
+          object.castShadow = "false";
+          object.receiveShadow = "false";
+          object.material.transparent = "false";
+        };
 
-        // if (object instanceof THREE.Mesh && object.material.name =='Transparent') {
-        //   object.material.transparent = "true";
-        //   object.material.opacity = 0.5;
-        // };
+        if (object instanceof THREE.Mesh && object.name =='Trees') {
+          object.material.transparent = "true";
+          object.material.clippingPlanes = [globalPlane2];
+          object.material.clipShadows = true;
+          object.material.opacity = 0.2;
+        };
       });
 
       mixer = new THREE.AnimationMixer(model);
       gltf.animations.forEach((clip) => {
-        mixer.clipAction(clip).setLoop( THREE.LoopOnce );
+        mixer.clipAction(clip).setLoop( THREE.LoopPingPong, 2 );
         mixer.clipAction(clip).play();
         clips.push(clip);
       });
@@ -140,8 +152,8 @@ function init(){
   );
   
   //LIGHT//////////////////////////////////
-  ambientlight = new THREE.AmbientLight( 0x080808, 1 ); 
-  dirLight = new THREE.DirectionalLight( 0xFCF8E4, 0.3 );
+  ambientlight = new THREE.AmbientLight( 0x080808, 10 ); 
+  dirLight = new THREE.DirectionalLight( 0xFCF8E4, 1 );
   dirLight.shadow.camera.right =  200;
   dirLight.shadow.camera.left = -200;
   dirLight.shadow.camera.top =  200;
@@ -161,14 +173,14 @@ function init(){
   scene.add(ambientlight);
   
   //RENDERERS////////////////////////////////
-  renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
+  renderer = new THREE.WebGLRenderer( { antialias: true } );
   renderer.shadowMap.enabled = true;
   renderer.gammaOutput = true;
   renderer.gammaFactor = 2.2;
   renderer.localClippingEnabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.autoClear = false;
-  renderer.setClearColor( 0xffffff, 0);
+  // renderer.setClearColor( 0xfdf7e8, 1);
   renderer.domElement.style.zIndex = 2;
   setPixelRatio();
   container = document.getElementById('container');
@@ -191,12 +203,12 @@ function init(){
 function animate(){
 
   var time2 = Date.now() * 0.002;
-  // scene.getObjectByName( "OLD_TOPO_CLOUDS" ).position.y = (Math.sin(time2*2))/4;
+  scene.getObjectByName( "Trees" ).position.y = (Math.sin(time2*2))/3;
   // scene.getObjectByName( "OLD_TOPO_BIRDS" ).position.y = (Math.sin(time2*7))/4;
 
-  dirLight.position.y = (sunData[ TOD ].sunPosition.Y);
-  dirLight.position.x = (sunData[ TOD ].sunPosition.X);
-  dirLight.position.z = -(sunData[ TOD ].sunPosition.Z);
+  // dirLight.position.y = (sunData[ TOD ].sunPosition.Y);
+  // dirLight.position.x = (sunData[ TOD ].sunPosition.X);
+  // dirLight.position.z = -(sunData[ TOD ].sunPosition.Z);
 
   // var slider = document.getElementById("myRange");
   // var slider2 = document.getElementById("myRange2");
@@ -227,26 +239,43 @@ function animate(){
 
 function mixerPlay(event){
   
+  clipCount += 1;
+
+  if (clipCount == 1){
+    clips.forEach((clip) => {
+      mixer.clipAction(clip).timeScale = 1;
+      mixer.clipAction(clip).clampWhenFinished = true;
+    })
+  } else {
+    clips.forEach((clip) => {
+      mixer.clipAction(clip).reset();
+      mixer.clipAction(clip).clampWhenFinished = true;
+    })
+  }
+
   clips.forEach((clip) => {
     mixer.clipAction(clip).timeScale = 1;
+    mixer.clipAction(clip).clampWhenFinished = true;
   });
 
-  var vals = { y: 1, x: 0.3 }; // Start at (0, 0)
-  var tweenLight = new TWEEN.Tween(vals) // Create a new tween that modifies 'vals'.
-  tweenLight.to({ y: 10, x: 1 }, 2500) // Move to (300, 200) in 1 second.
-  tweenLight.easing(TWEEN.Easing.Quadratic.InOut);
-  tweenLight.delay(500);
-  tweenLight.start(); // Start the tween immediately.
-  tweenLight.onUpdate(function(object) {
-    ambientlight.intensity = vals.y;
-    dirLight.intensity = vals.x;
-    // TOD = vals.x;
-  });
+  console.log(clipCount);
 
-  $("#heading").delay(2000).fadeOut(function() {
-    $(this).text("Warm."+ "\n" + "Bright." + "\n" + "Sustainable");
-    $('#left-half').css('background-color', '#fdf7e8');
-  }).fadeIn(2000);
+
+  // var vals = { y: 1, x: 0.3 }; // Start at (0, 0)
+  // var tweenLightOn = new TWEEN.Tween(vals) // Create a new tween that modifies 'vals'.
+  // tweenLightOn.to({ y: 10, x: 1 }, 2500) // Move to (300, 200) in 1 second.
+  // tweenLightOn.easing(TWEEN.Easing.Quadratic.InOut);
+  // tweenLightOn.delay(500);
+  // tweenLightOn.start(); // Start the tween immediately.
+  // tweenLightOn.onUpdate(function(object) {
+  //   ambientlight.intensity = vals.y;
+  //   dirLight.intensity = vals.x;
+  //   TOD = vals.x;
+  // });
+
+//   $("#heading").delay(2000).fadeOut(function() {
+//     $(this).text("Insert Second Header Statement About Diagram");
+//   }).fadeIn(5000);
 };
 
 // function onDocumentMouseMove(event) {
