@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta name="viewport" content="initial-scale=0.66, user-scalable=no">
+	
+	<title>QUT - Massing Logic</title>
+
+	<!-- core libraries -->
+	<script type="text/javascript" src="node_modules/three/build/three.min.js"></script>
+	<script type="text/javascript" src="node_modules/three/build/three.module.js"></script>
+	<script type="text/javascript" src="node_modules/three/examples/js/renderers/CSS3DRenderer.js"></script>
+	<script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
+	<script type="text/javascript" src="node_modules/hammerjs/hammer.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js"></script>
+	<script type="text/javascript" src="js/tween.min.js"></script>
+	<!-- threejs misc and json import -->
+	<script type="text/javascript" src="node_modules/three/examples/js/controls/OrbitControls.js"></script>
+	<script type="text/javascript" src="node_modules/three/examples/js/loaders/GLTFLoader.js"></script>
+	<script type="text/javascript" src="node_modules/three/examples/js/loaders/DRACOLoader.js"></script>
+	<script type="text/javascript" src="node_modules/three/examples/js/libs/draco/gltf/draco_decoder.js"></script>
+	
+	<!-- threejs postprocessors -->
+	<script type="text/javascript" src="node_modules/three/examples/js/postprocessing/EffectComposer.js"></script>
+	<script type="text/javascript" src="node_modules/three/examples/js/shaders/CopyShader.js"></script>
+	<script type="text/javascript" src="node_modules/three/examples/js/postprocessing/RenderPass.js"></script>
+	<script type="text/javascript" src="node_modules/three/examples/js/postprocessing/ShaderPass.js"></script>
+	<script type="text/javascript" src="ref/sunPosition.js"></script>
+
+	<!-- style imports -->
+	<link rel="stylesheet" type="text/css" href="style/index.css">
+	<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Advent+Pro:500|Open+Sans" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Playfair+Display:700|Quicksand" rel="stylesheet">
+
+</head>
+
+<body>
+
+	<!-- loading page -->
+<!-- 	<div id="loadingPage" class="loader">
+		<img id="logo" src="img/wovenLogo.gif" style="height:50%">
+	</div> -->
+
+
+	<section id="flexContainer">
+	  <!-- diagram content -->
+	  <div class="flexBox" id="left-half">
+  		<div id="container"></div>
+		<div id="css3dScene"></div>
+	  </div>
+	  <!-- text content -->
+	  <div class="flexBox" id="right-half">
+	      <div id="textContent">
+	        <h1 id="heading">Insert Header Statement About Diagram</h1>
+	        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse auctor imperdiet ex. Phasellus justo massa, dignissim id purus sit amet, bibendum lobortis nisi. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Why don't you try cracking open the existing building? A double click, or double-tap might help...</p><br><br>
+<!-- 	        <input type="range" min="0" max="100" value="0" class="slider" id="myRange">
+	        <input type="range" min="0" max="100" value="0" class="slider" id="myRange2"> -->
+	      </div>
+	  </div>
+	</section> 
+
+	<!-- <script type="text/javascript" src="/index.js"></script> -->
+	<script type="text/javascript" src="/index.js"></script>
+
+</body>
+
+</html>
