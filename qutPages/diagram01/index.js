@@ -46,7 +46,7 @@ function init(){
   globalPlane2 = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 5);
   var geometryPlane = new THREE.PlaneGeometry(1000,1000);
   var groundMaterial = new THREE.ShadowMaterial();
-  groundMaterial.opacity = 0.2;
+  groundMaterial.opacity = 0.1;
   var ground = new THREE.Mesh(geometryPlane, groundMaterial);
   ground.rotateX( - Math.PI / 2 );
   ground.position.y = -14;
