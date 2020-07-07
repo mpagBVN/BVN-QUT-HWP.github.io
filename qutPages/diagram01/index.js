@@ -9,6 +9,7 @@ var globalPlane;
 /////////Events/////////////////////
 window.addEventListener( 'resize', onWindowResize, false );
 Hammer(document.getElementById('container')).on("doubletap", mixerPlay);
+mobileUI();
 /////////Screen/Camera Variables////////
 container = document.getElementById('container');
 var aspect = $(container).width() / $(container).height();
@@ -69,7 +70,7 @@ function init(){
   };
   manager.onLoad = function ( ) {
 
-    console.log("fired");
+    // console.log("fired");
    
     // $(".loader").css('visibility', 'hidden') 
     // $("#flexContainer").css('visibility', 'visible');
@@ -101,7 +102,6 @@ function init(){
       gltf.animations; // Array<THREE.AnimationClip>
       gltf.scene; // THREE.Scene
       gltf.asset; // Object
-      console.log(gltf.scene);
 
       gltf.scene.traverse(function(object) {
 
@@ -124,7 +124,6 @@ function init(){
           object.receiveShadow = "true"
           object.material.clippingPlanes = [globalPlane3];
           object.material.clipShadows = true; 
-          console.log("captured3");
         };
 
         if (object instanceof THREE.Mesh && object.name =='Trees002') {
@@ -270,9 +269,6 @@ function mixerPlay(event){
     mixer.clipAction(clip).clampWhenFinished = true;
   });
 
-  console.log(clipCount);
-
-
   // var vals = { y: 1, x: 0.3 }; // Start at (0, 0)
   // var tweenLightOn = new TWEEN.Tween(vals) // Create a new tween that modifies 'vals'.
   // tweenLightOn.to({ y: 10, x: 1 }, 2500) // Move to (300, 200) in 1 second.
@@ -323,10 +319,18 @@ function isMobileDevice() {
     return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
 };
 
+function mobileUI(){
+  if (isMobileDevice == true){
+        document.getElementById('right-half').style.display = 'none';
+        console.log('mobile client');
+  } else {
+    console.log('desktop client');
+  }
+};
+
 document.addEventListener("keypress", function(e) {
   if (e.keyCode === 13) {
     toggleFullScreen();
-    console.log("triggered");
   }
 }, false);
 
