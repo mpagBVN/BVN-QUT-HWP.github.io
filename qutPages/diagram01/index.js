@@ -135,10 +135,11 @@ function init(){
         };
 
         if (object instanceof THREE.Mesh && object.name =='LayerD') {
-          object.material.transparent = "true";
           object.material.clippingPlanes = [globalPlane2];
           object.material.clipShadows = true;
           object.material.opacity = 0.8;
+
+
         };
       });
 
