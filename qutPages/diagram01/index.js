@@ -4,7 +4,7 @@ var clock = new THREE.Clock();
 camTarget = new THREE.Vector3(0,40,0);
 var clips = [];
 var clipCount = 0;
-var TOD = 10;
+var TOD = 13;
 var globalPlane;
 /////////Events/////////////////////
 window.addEventListener( 'resize', onWindowResize, false );
@@ -27,7 +27,7 @@ function init(){
   camera = new THREE.OrthographicCamera( frustumSize*aspect/-2, frustumSize*aspect/2, frustumSize/2, frustumSize/-2, near, far );
   camera.position.x = -20;
   camera.position.y = 200;
-  camera.position.z = 20;
+  camera.position.z = -20;
   camera.zoom = 4;
   camera.aspect = aspect;
   camera.target = camTarget;
@@ -43,13 +43,15 @@ function init(){
 
   /////////ClippingPlanes & Shadow Planes///////////
   globalPlane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 0.1);
-  globalPlane2 = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 5);
+  globalPlane2 = new THREE.Plane( new THREE.Vector3( 0, -1, 0 ), 150);
+  globalPlane3 = new THREE.Plane( new THREE.Vector3( 0, 0, -1 ), 53.23);
+
   var geometryPlane = new THREE.PlaneGeometry(1000,1000);
   var groundMaterial = new THREE.ShadowMaterial();
   groundMaterial.opacity = 0.1;
   var ground = new THREE.Mesh(geometryPlane, groundMaterial);
   ground.rotateX( - Math.PI / 2 );
-  ground.position.y = -14;
+  ground.position.y = -30;
   ground.receiveShadow = true;
   scene.add( ground );
 
@@ -105,28 +107,38 @@ function init(){
 
         if (object instanceof THREE.Mesh){
           object.material.envMap = envMap;
-          object.material.envMapIntensity = 0.1;
+          object.material.envMapIntensity = 0.5;
+          object.castShadow = "true";
+          object.receiveShadow = "true"
         };
 
-        if (object instanceof THREE.Mesh && object.name !='Green') {
+        if (object instanceof THREE.Mesh && object.name =='LayerB001') {
           object.castShadow = "true";
           object.receiveShadow = "true"
           object.material.clippingPlanes = [globalPlane];
           object.material.clipShadows = true; 
-          console.log("captured");
         };
 
-        if (object instanceof THREE.Mesh && object.name =='Green') {
-          object.castShadow = "false";
-          object.receiveShadow = "false";
-          object.material.transparent = "false";
+        if (object instanceof THREE.Mesh && (object.material.name =='Default OBJ.001')) {
+          object.castShadow = "true";
+          object.receiveShadow = "true"
+          object.material.clippingPlanes = [globalPlane3];
+          object.material.clipShadows = true; 
+          console.log("captured3");
         };
 
-        if (object instanceof THREE.Mesh && object.name =='Trees') {
+        if (object instanceof THREE.Mesh && object.name =='Trees002') {
           object.material.transparent = "true";
           object.material.clippingPlanes = [globalPlane2];
           object.material.clipShadows = true;
           object.material.opacity = 0.2;
+        };
+
+        if (object instanceof THREE.Mesh && object.name =='LayerD') {
+          object.material.transparent = "true";
+          object.material.clippingPlanes = [globalPlane2];
+          object.material.clipShadows = true;
+          object.material.opacity = 0.8;
         };
       });
 
@@ -203,7 +215,7 @@ function init(){
 function animate(){
 
   var time2 = Date.now() * 0.002;
-  scene.getObjectByName( "Trees" ).position.y = (Math.sin(time2*2))/3;
+  scene.getObjectByName( "Trees002" ).position.y = (Math.sin(time2*2))/3;
   // scene.getObjectByName( "OLD_TOPO_BIRDS" ).position.y = (Math.sin(time2*7))/4;
 
   // dirLight.position.y = (sunData[ TOD ].sunPosition.Y);
