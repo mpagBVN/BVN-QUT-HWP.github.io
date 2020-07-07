@@ -1,7 +1,7 @@
 /////////Global Variables///////////
 var camera, scene, renderer, rectangle, div, controls, manager, mixer, composer, dirLight, tween, coords, ambientlight;
 var clock = new THREE.Clock();
-camTarget = new THREE.Vector3(0,40,0);
+camTarget = new THREE.Vector3(0,20,0);
 var clips = [];
 var clipCount = 0;
 var TOD = 13;
@@ -84,7 +84,7 @@ function init(){
 
     var coords = { y: 200 }; // Start at (0, 0)
     var tween = new TWEEN.Tween(coords) // Create a new tween that modifies 'coords'.
-    tween.to({ y: 60, x: 10 }, 2500) // Move to (300, 200) in 1 second.
+    tween.to({ y: 40 }, 2500) // Move to (300, 200) in 1 second.
     tween.easing(TWEEN.Easing.Elastic.Out);
     tween.delay(500);
     tween.start(); // Start the tween immediately.
@@ -137,9 +137,8 @@ function init(){
         if (object instanceof THREE.Mesh && object.name =='LayerD') {
           object.material.clippingPlanes = [globalPlane2];
           object.material.clipShadows = true;
+          object.material.side = THREE.DoubleSide;
           object.material.opacity = 0.8;
-
-
         };
       });
 
@@ -328,6 +327,7 @@ function mobileUI(){
     console.log('mobile client');
   } else {
     document.getElementById('right-half').style.display = 'flex';
+    document.getElementById('footer').style.display = 'none';
     console.log('desktop client');
   }
 };
