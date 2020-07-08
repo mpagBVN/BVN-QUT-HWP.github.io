@@ -34,6 +34,11 @@ body {
   margin-left: 5px;
   margin-right: 5px;
   flex: 1 1 200px;
+  text-decoration: none;
+}
+
+a:link {
+  text-decoration: none;
 }
 
 .module:hover {
@@ -62,6 +67,15 @@ h1 {
   color: black;
   margin: 0.2em 0;
   font-family: 'Advent Pro', san-serif;
+}
+
+h2 {
+  font-size: 0.8em;
+  color: black;
+  margin: 0.2em 0;
+  font-family: 'Open Sans', sans-serif;
+  text-align: left;
+  text-decoration: none;
 }
 
 p {

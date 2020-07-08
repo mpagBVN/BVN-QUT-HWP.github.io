@@ -136,8 +136,8 @@ function init(){
         };
 
         if (object instanceof THREE.Mesh && object.name =='Building Roof.001_0') {
-          object.material.clippingPlanes = [globalPlane2];
-          object.material.clipShadows = true;
+          // object.material.clippingPlanes = [globalPlane2];
+          // object.material.clipShadows = true;
           object.material.side = THREE.DoubleSide;
           object.material.opacity = 0.5;
         };
