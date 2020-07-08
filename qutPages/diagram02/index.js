@@ -55,7 +55,7 @@ function init(){
   ground.rotateX( - Math.PI / 2 );
   ground.position.y = -30;
   ground.receiveShadow = true;
-  scene.add( ground );
+  // scene.add( ground );
 
   //////////Loader////////////////////////
 
@@ -96,7 +96,7 @@ function init(){
   };
 
   // Load a glTF resource
-  loader.load('models/QUT_Diagram_01.glb', function ( gltf ) {
+  loader.load('models/QUT_Diagram_02.glb', function ( gltf ) {
       model = gltf.scene;
       clips = gltf.animations;
       scene.add( model );
@@ -113,33 +113,41 @@ function init(){
           object.receiveShadow = "true"
         };
 
-        if (object instanceof THREE.Mesh && object.name =='LayerB001') {
-          object.castShadow = "true";
-          object.receiveShadow = "true"
-          object.material.clippingPlanes = [globalPlane];
-          object.material.clipShadows = true; 
-        };
+      //   if (object instanceof THREE.Mesh && object.name =='LayerB001') {
+      //     object.castShadow = "true";
+      //     object.receiveShadow = "true"
+      //     object.material.clippingPlanes = [globalPlane];
+      //     object.material.clipShadows = true; 
+      //   };
 
-        if (object instanceof THREE.Mesh && (object.material.name =='Default OBJ.001')) {
-          object.castShadow = "true";
-          object.receiveShadow = "true"
-          object.material.clippingPlanes = [globalPlane3];
-          object.material.clipShadows = true; 
-        };
+      //   if (object instanceof THREE.Mesh && (object.material.name =='Default OBJ.001')) {
+      //     object.castShadow = "true";
+      //     object.receiveShadow = "true"
+      //     object.material.clippingPlanes = [globalPlane3];
+      //     object.material.clipShadows = true; 
+      //   };
 
-        if (object instanceof THREE.Mesh && object.name =='Trees002') {
+        if (object instanceof THREE.Mesh && object.name =='Building_00_Trees_Drawn') {
           object.material.transparent = "true";
-          object.material.clippingPlanes = [globalPlane2];
-          object.material.clipShadows = true;
+      //     object.material.clippingPlanes = [globalPlane2];
+      //     object.material.clipShadows = true;
           object.material.opacity = 0.2;
         };
 
-        if (object instanceof THREE.Mesh && object.name =='LayerD') {
+        if (object instanceof THREE.Mesh && object.name =='Building Roof.001_0') {
           object.material.clippingPlanes = [globalPlane2];
           object.material.clipShadows = true;
           object.material.side = THREE.DoubleSide;
-          object.material.opacity = 0.8;
+          object.material.opacity = 0.5;
         };
+
+        if (object instanceof THREE.Mesh && object.name =='Building Roof.001_1') {
+          // object.material.clippingPlanes = [globalPlane2];
+          // object.material.clipShadows = true;
+          object.material.side = THREE.DoubleSide;
+          // object.material.opacity = 0.8;
+        };
+
       });
 
       mixer = new THREE.AnimationMixer(model);
@@ -203,7 +211,7 @@ function init(){
   controls = new THREE.OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
   controls.dampingFactor = 0.25;
-  controls.enablePan = false;
+  controls.enablePan = true;
   controls.enableRotate = true;
   controls.target = new THREE.Vector3(0, camTarget.y, 0);
   controls.update();
@@ -215,7 +223,7 @@ function init(){
 function animate(){
 
   var time2 = Date.now() * 0.002;
-  scene.getObjectByName( "Trees002" ).position.y = (Math.sin(time2*2))/3;
+  // scene.getObjectByName( "Trees002" ).position.y = (Math.sin(time2*2))/3;
   // scene.getObjectByName( "OLD_TOPO_BIRDS" ).position.y = (Math.sin(time2*7))/4;
 
   // dirLight.position.y = (sunData[ TOD ].sunPosition.Y);
